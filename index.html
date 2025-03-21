@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom URL Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, button { padding: 10px; margin: 10px; width: 80%; max-width: 400px; }
+        #generatedLink { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>कस्टम URL जेनरेटर</h2>
+    
+    <input type="text" id="userURL" placeholder="अपना URL डालें (http://balma.netlify.app)">
+    <input type="text" id="channelName" placeholder="अपना चैनल नाम डालें">
+    <button onclick="generateLink()">Generate Link</button>
+
+    <div id="generatedLink"></div>
+
+    <script>
+        function generateLink() {
+            let userURL = document.getElementById("userURL").value;
+            let channelName = document.getElementById("channelName").value;
+            
+            if (userURL === "" || channelName === "") {
+                alert("कृपया सभी फ़ील्ड भरें!");
+                return;
+            }
+
+            let encodedURL = btoa(userURL); // Base64 Encode
+            let customLink = window.location.origin + "/redirect.html?data=" + encodedURL;
+
+            document.getElementById("generatedLink").innerHTML = `
+                <p>आपका कस्टम लिंक: <a href="${customLink}" target="_blank">${customLink}</a></p>
+                <button onclick="copyLink('${customLink}')">कॉपी करें</button>
+            `;
+        }
+
+        function copyLink(link) {
+            navigator.clipboard.writeText(link).then(() => {
+                alert("लिंक कॉपी हो गया!");
+            });
+        }
+    </script>
+
+</body>
+</html>
