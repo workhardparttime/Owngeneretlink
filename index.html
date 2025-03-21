@@ -4,21 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom URL Generator</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
-        input, button { padding: 10px; margin: 10px; width: 80%; max-width: 400px; }
-        #generatedLink { margin-top: 20px; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h2>कस्टम URL जेनरेटर</h2>
-    
-    <input type="text" id="userURL" placeholder="अपना URL डालें (http://example.com)">
-    <input type="text" id="channelName" placeholder="अपना चैनल नाम डालें">
-    <button onclick="generateLink()">Generate Link</button>
+    <div class="container">
+        <h2>Generate Link</h2>
 
-    <div id="generatedLink"></div>
+        <div class="input-box">
+            <input type="text" id="userURL" placeholder="Enter your URL">
+            <button class="tag">URL</button>
+        </div>
+
+        <div class="input-box">
+            <input type="text" id="channelName" placeholder="Your channel name">
+        </div>
+
+        <button class="generate-btn" onclick="generateLink()">Generate Link</button>
+
+        <div id="generatedLink"></div>
+
+        <!-- Telegram Share Button -->
+        <div id="telegramButton" style="display: none; margin-top: 20px;">
+            <a id="telegramShareLink" href="#" target="_blank">
+                <button style="background-color: #0088cc; color: white; padding: 10px 20px; border: none; cursor: pointer;">
+                    📩 Share on Telegram
+                </button>
+            </a>
+        </div>
+
+    </div>
 
     <script>
         function generateLink() {
@@ -26,7 +41,7 @@
             let channelName = document.getElementById("channelName").value;
             
             if (userURL === "" || channelName === "") {
-                alert("कृपया सभी फ़ील्ड भरें!");
+                alert("Please fill in all fields!");
                 return;
             }
 
@@ -34,14 +49,19 @@
             let customLink = window.location.origin + "/redirect.html?data=" + encodedURL;
 
             document.getElementById("generatedLink").innerHTML = `
-                <p>आपका कस्टम लिंक: <a href="${customLink}" target="_blank">${customLink}</a></p>
-                <button onclick="copyLink('${customLink}')">कॉपी करें</button>
+                <p>Your Custom Link: <a href="${customLink}" target="_blank">${customLink}</a></p>
+                <button onclick="copyLink('${customLink}')">Copy</button>
             `;
+
+            // Telegram Share Button Logic
+            let telegramURL = `https://t.me/share/url?url=${encodeURIComponent(customLink)}&text=Check%20out%20this%20custom%20link!`;
+            document.getElementById("telegramShareLink").href = telegramURL;
+            document.getElementById("telegramButton").style.display = "block";
         }
 
         function copyLink(link) {
             navigator.clipboard.writeText(link).then(() => {
-                alert("लिंक कॉपी हो गया!");
+                alert("Link copied!");
             });
         }
     </script>
